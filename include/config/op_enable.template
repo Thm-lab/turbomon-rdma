@@ -1,0 +1,11 @@
+#ifndef OP_ENABLE_H
+#define OP_ENABLE_H
+
+#define OP_MAX {{ op_max }}
+#define OP_MIN {{ op_min }}
+#define OP_EXIST {{ op_exist }}
+#define OP_DISTINCT {{ op_distinct }}
+#define OP_MERGE {{ op_merge }}
+#define OP_FILTER {{ op_filter }}
+
+#endif // OP_ENABLE_H
