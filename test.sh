@@ -53,7 +53,11 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # 生成配置文件
+echo "Generating op config..."
 python3 op_config.py $(printf -- "--op %s " "${OP_PARAMS[@]}")
+if [ $? -ne 0 ]; then
+    exit 1
+fi
 
 if [ ! -d "build" ]; then
     mkdir -p build
@@ -75,10 +79,16 @@ echo "Build Success"
 case $MODE in
     send)
         echo "Runing: ./bin/${SKETCH}_send 10.0.0.5 0000:5e:00.0 -l 0-3"
+        echo "Sketch:${SKETCH}"
+        echo "Mode:${MODE}"
+        echo "Op:${OP_PARAMS[@]}"
         sudo ./bin/${SKETCH}_send 10.0.0.5 0000:5e:00.0 -l 0-3 | tee send.log
         ;;
     recv)
         echo "Ruing sudo ./bin/${SKETCH}_recv 10.0.0.5 auxiliary/mlx5_core.sf.2"
+        echo "Sketch:${SKETCH}"
+        echo "Mode:${MODE}"
+        echo "Op:${OP_PARAMS[@]}"
         sudo ./bin/${SKETCH}_recv 10.0.0.5 auxiliary/mlx5_core.sf.2 | tee recv.log
         ;;
 esac
