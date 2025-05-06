@@ -1,5 +1,6 @@
 #!/bin/bash
 clear
+set -o pipefail # 新增此行以确保管道命令的正确退出状态
 
 # 显示帮助信息
 show_help() {
@@ -68,27 +69,31 @@ if [ "$current_dir" != "build" ]; then
 fi
 cmake .. &> build.log
 if [ $? -ne 0 ]; then
+    echo "Error: CMake Build Failed"
+    echo "Logs at build/build.log"
     exit 1
 fi
 make -j4 --no-print-directory | tee make.log
 if [ $? -ne 0 ]; then
+    echo "Error: Make Compile Failed"
+    echo "Logs at build/build.log"
     exit 1
 fi
 echo "Build Success"
 
 case $MODE in
     send)
-        echo "Runing: ./bin/${SKETCH}_send 10.0.0.5 0000:5e:00.0 -l 0-3"
+        echo "Runing: ./bin/${SKETCH}_send 10.0.0.1 0000:5e:00.1 -l 0-3"
         echo "Sketch:${SKETCH}"
         echo "Mode:${MODE}"
         echo "Op:${OP_PARAMS[@]}"
-        sudo ./bin/${SKETCH}_send 10.0.0.5 0000:5e:00.0 -l 0-3 | tee send.log
+        sudo ./bin/${SKETCH}_send 10.0.0.1 0000:5e:00.1 -l 0-3 | tee send.log
         ;;
     recv)
-        echo "Ruing sudo ./bin/${SKETCH}_recv 10.0.0.5 auxiliary/mlx5_core.sf.2"
+        echo "Ruing sudo ./bin/${SKETCH}_recv 10.0.0.1 auxiliary/mlx5_core.sf.2"
         echo "Sketch:${SKETCH}"
         echo "Mode:${MODE}"
         echo "Op:${OP_PARAMS[@]}"
-        sudo ./bin/${SKETCH}_recv 10.0.0.5 auxiliary/mlx5_core.sf.2 | tee recv.log
+        sudo ./bin/${SKETCH}_recv 10.0.0.1 auxiliary/mlx5_core.sf.2 | tee recv.log
         ;;
 esac
