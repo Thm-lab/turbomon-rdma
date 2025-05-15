@@ -67,6 +67,7 @@ void rdma_server::setup_buffer() {
     recv_sgl.lkey = this->recv_mr->lkey;
     rq_wr.num_sge = 1;
     rq_wr.sg_list = &this->recv_sgl;
+    rq_wr.next = nullptr;
 
     send_sgl.addr = (uint64_t)(unsigned long)&this->send_buf;
     send_sgl.length = sizeof(struct rdma_info);
@@ -75,6 +76,7 @@ void rdma_server::setup_buffer() {
     sq_wr.sg_list = &this->send_sgl;
     sq_wr.send_flags = IBV_SEND_SIGNALED;
     sq_wr.opcode = IBV_WR_SEND;
+    sq_wr.next = nullptr;
 
     rdma_sgl.addr = (uint64_t)(unsigned long)this->rdma_buf;
     rdma_sgl.lkey = this->rdma_mr->lkey;
