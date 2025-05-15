@@ -148,7 +148,7 @@ void rdma_server::rdma_read() {
     struct ibv_send_wr* bad_wr;
     int ret;
 
-    if (SERVER_GET_REMOTE_ADDR = false) {
+    if (SERVER_GET_REMOTE_ADDR == false) {
         std::cout << "error" << std::endl;
         exit(1);
     }
@@ -392,7 +392,7 @@ void rdma_server::start() {
         exit(1);
     }
 
-    while (state != CONNECTED) {
+    while (state != SERVER_CONNECTED) {
     }
     std::cout << "连接建立" << std::endl;
 
